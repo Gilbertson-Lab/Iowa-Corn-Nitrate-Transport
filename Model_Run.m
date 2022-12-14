@@ -1,4 +1,4 @@
-load uniqmu %unique codes for Iowa soils
+load uniqmu %unique codes for Iowa soil map units
 load 2020precip %file containing hourly precipitation from 2020
 load SDATA %file containing soil data from Iowa
 load farm %file containing fertilizer amount and application timing
@@ -6,13 +6,13 @@ load farm %file containing fertilizer amount and application timing
 systemdepth = 100;
 mass = farm(1,1);
 timing = farm(2,:);
-for i = 1 %iterate through Iowa Soils
+for i = 1 %iterate through Iowa Soil Map Units
     muind = uniqmu(i);
     name = ['MU',num2str(muind)];
     conames = fieldnames(SDATA.(name));
     conames(length(conames)) = [];
     tic
-    for j = 1:length(conames)
+    for j = 1 %iterate through components of Iowa Soil Map Units
         name2 = char(conames(j));
         depth1 = table2array(SDATA.(name).(name2)(1,10));
         if depth1 >= systemdepth
@@ -129,12 +129,13 @@ for i = 1 %iterate through Iowa Soils
         end
         location = SDATA.(name).stations;
         system = syssetup(data);
-        for P = 1:length(location)
+        for P = 1
+            totmass = mass.*19.*19;
+            pname = ['station',num2str(location(P))];
             precip = precipdata(:,location(P));
             [totuptake, conserve, leach] = SIMfunc(system, precip, timing, mass);
-            SDATA.(name).outdata(:,P,j) = [totuptake, conserve, leach];
-            DATA.(name).outdata(:,P,j) = [totuptake, conserve, leach];
-            DATA.(name).stations = location;
+            DATA.(name).(name2).(pname)(:,1) = [totuptake, conserve, leach];
+            DATA.(name).(name2).(pname)(:,2) = [totuptake, conserve, leach]./totmass;
         end
         clearvars -except DATA SDATA precipdata uniqmu j i conames name muind timing mass systemdepth
         toc

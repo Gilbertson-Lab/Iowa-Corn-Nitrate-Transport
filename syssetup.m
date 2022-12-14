@@ -1,0 +1,219 @@
+function system = syssetup(data)
+numhor = length(data(:,1));
+depth = 100;
+xx = 19;
+yy = 19;
+if numhor == 1
+    SATdata = data(8)/100;
+    KSdata = data(5);
+    FCdata = data(6)/100;
+    WPdata = data(7)/100;
+    TTdata = (SATdata - FCdata)/(KSdata/24);  
+    Ndata = exp(-1.0846+(-0.0236*data(3))+(-0.0085*data(1))+(0.0001*data(1)^2))+1;
+    adata = exp(-4.3+(-0.0097*data(3))+(0.0138*data(1))+(-0.0992*data(4)));
+    Mdata = 1-1/Ndata;
+    space = ones(depth,xx,yy);
+    spacetime = ones(depth,xx,yy,120,24);
+    SAT = SATdata*space;
+    FC = FCdata*space;
+    SWly1 = FCdata*spacetime;
+    WP = WPdata*space;
+    KS = KSdata*space;
+    TT = TTdata*space;
+    N = Ndata*space;
+    a = adata*space;
+    M = Mdata*space;
+elseif numhor == 2
+    depth1 = data(1,9);
+    SATdata1 = data(1,8)/100;
+    KSdata1 = data(1,5);
+    FCdata1 = data(1,6)/100;
+    WPdata1 = data(1,7)/100;
+    TTdata1 = (SATdata1 - FCdata1)/(KSdata1/24);  
+    Ndata1 = exp(-1.0846+(-0.0236*data(1,3))+(-0.0085*data(1,1))+(0.0001*data(1,1)^2))+1;
+    adata1 = exp(-4.3+(-0.0097*data(1,3))+(0.0138*data(1,1))+(-0.0992*data(1,4)));
+    Mdata1 = 1-1/Ndata1;
+    
+    SATdata2 = data(2,8)/100;
+    KSdata2 = data(2,5);
+    FCdata2 = data(2,6)/100;
+    WPdata2 = data(2,7)/100;
+    TTdata2 = (SATdata2 - FCdata2)/(KSdata2/24);  
+    Ndata2 = exp(-1.0846+(-0.0236*data(2,3))+(-0.0085*data(2,1))+(0.0001*data(2,1)^2))+1;
+    adata2 = exp(-4.3+(-0.0097*data(2,3))+(0.0138*data(2,1))+(-0.0992*data(2,4)));
+    Mdata2 = 1-1/Ndata2;
+    space = ones(depth,xx,yy);
+    spacetime = ones(depth,xx,yy,120,24);
+    
+    SAT(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*SATdata1;
+    FC(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*FCdata1;
+    SWly1(1:depth1, 1:xx, 1:yy,:,:) = FCdata1*spacetime(1:depth1, 1:xx, 1:yy,:,:);
+    WP(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*WPdata1;
+    TT(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*TTdata1;
+    KS(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*KSdata1;
+    N(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*Ndata1;
+    a(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*adata1;
+    M(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*Mdata1;
+    
+    SAT(depth1+1:depth, 1:xx, 1:yy) = space(depth1+1:depth, 1:xx, 1:yy)*SATdata2;
+    FC(depth1+1:depth, 1:xx, 1:yy) = space(depth1+1:depth, 1:xx, 1:yy)*FCdata2;
+    SWly1(depth1+1:depth, 1:xx, 1:yy,:,:) = FCdata2*spacetime(depth1+1:depth, 1:xx, 1:yy,:,:);
+    WP(depth1+1:depth, 1:xx, 1:yy) = space(depth1+1:depth, 1:xx, 1:yy)*WPdata2;
+    TT(depth1+1:depth, 1:xx, 1:yy) = space(depth1+1:depth, 1:xx, 1:yy)*TTdata2;
+    KS(depth1+1:depth, 1:xx, 1:yy) = space(depth1+1:depth, 1:xx, 1:yy)*KSdata2;
+    N(depth1+1:depth, 1:xx, 1:yy) = space(depth1+1:depth, 1:xx, 1:yy)*Ndata2;
+    a(depth1+1:depth, 1:xx, 1:yy) = space(depth1+1:depth, 1:xx, 1:yy)*adata2;
+    M(depth1+1:depth, 1:xx, 1:yy) = space(depth1+1:depth, 1:xx, 1:yy)*Mdata2;
+elseif numhor == 3
+    depth1 = data(1,9);
+    SATdata1 = data(1,8)/100;
+    KSdata1 = data(1,5);
+    FCdata1 = data(1,6)/100;
+    WPdata1 = data(1,7)/100;
+    TTdata1 = (SATdata1 - FCdata1)/(KSdata1/24);  
+    Ndata1 = exp(-1.0846+(-0.0236*data(1,3))+(-0.0085*data(1,1))+(0.0001*data(1,1)^2))+1;
+    adata1 = exp(-4.3+(-0.0097*data(1,3))+(0.0138*data(1,1))+(-0.0992*data(1,4)));
+    Mdata1 = 1-1/Ndata1;
+    
+    depth2 = data(2,9);
+    SATdata2 = data(2,8)/100;
+    KSdata2 = data(2,5);
+    FCdata2 = data(2,6)/100;
+    WPdata2 = data(2,7)/100;
+    TTdata2 = (SATdata2 - FCdata2)/(KSdata2/24);  
+    Ndata2 = exp(-1.0846+(-0.0236*data(2,3))+(-0.0085*data(2,1))+(0.0001*data(2,1)^2))+1;
+    adata2 = exp(-4.3+(-0.0097*data(2,3))+(0.0138*data(2,1))+(-0.0992*data(2,4)));
+    Mdata2 = 1-1/Ndata2;
+    
+    SATdata3 = data(3,8)/100;
+    KSdata3 = data(3,5);
+    FCdata3 = data(3,6)/100;
+    WPdata3 = data(3,7)/100;
+    TTdata3 = (SATdata3 - FCdata3)/(KSdata3/24);  
+    Ndata3 = exp(-1.0846+(-0.0236*data(3,3))+(-0.0085*data(3,1))+(0.0001*data(3,1)^2))+1;
+    adata3 = exp(-4.3+(-0.0097*data(3,3))+(0.0138*data(3,1))+(-0.0992*data(3,4)));
+    Mdata3 = 1-1/Ndata3;
+    space = ones(depth,xx,yy);
+    spacetime = ones(depth,xx,yy,120,24);
+    
+    SAT(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*SATdata1;
+    FC(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*FCdata1;
+    SWly1(1:depth1, 1:xx, 1:yy,:,:) = FCdata1*spacetime(1:depth1, 1:xx, 1:yy,:,:);
+    WP(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*WPdata1;
+    TT(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*TTdata1;
+    KS(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*KSdata1;
+    N(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*Ndata1;
+    a(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*adata1;
+    M(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*Mdata1;
+    
+    SAT(depth1+1:depth2, 1:xx, 1:yy) = space(depth1+1:depth2, 1:xx, 1:yy)*SATdata2;
+    FC(depth1+1:depth2, 1:xx, 1:yy) = space(depth1+1:depth2, 1:xx, 1:yy)*FCdata2;
+    SWly1(depth1+1:depth2, 1:xx, 1:yy,:,:) = FCdata2*spacetime(depth1+1:depth2, 1:xx, 1:yy,:,:);
+    WP(depth1+1:depth2, 1:xx, 1:yy) = space(depth1+1:depth2, 1:xx, 1:yy)*WPdata2;
+    TT(depth1+1:depth2, 1:xx, 1:yy) = space(depth1+1:depth2, 1:xx, 1:yy)*TTdata2;
+    KS(depth1+1:depth2, 1:xx, 1:yy) = space(depth1+1:depth2, 1:xx, 1:yy)*KSdata2;
+    N(depth1+1:depth2, 1:xx, 1:yy) = space(depth1+1:depth2, 1:xx, 1:yy)*Ndata2;
+    a(depth1+1:depth2, 1:xx, 1:yy) = space(depth1+1:depth2, 1:xx, 1:yy)*adata2;
+    M(depth1+1:depth2, 1:xx, 1:yy) = space(depth1+1:depth2, 1:xx, 1:yy)*Mdata2;
+    
+    SAT(depth2+1:depth, 1:xx, 1:yy) = space(depth2+1:depth, 1:xx, 1:yy)*SATdata3;
+    FC(depth2+1:depth, 1:xx, 1:yy) = space(depth2+1:depth, 1:xx, 1:yy)*FCdata3;
+    SWly1(depth2+1:depth, 1:xx, 1:yy,:,:) = FCdata3*spacetime(depth2+1:depth, 1:xx, 1:yy,:,:);
+    WP(depth2+1:depth, 1:xx, 1:yy) = space(depth2+1:depth, 1:xx, 1:yy)*WPdata3;
+    TT(depth2+1:depth, 1:xx, 1:yy) = space(depth2+1:depth, 1:xx, 1:yy)*TTdata3;
+    KS(depth2+1:depth, 1:xx, 1:yy) = space(depth2+1:depth, 1:xx, 1:yy)*KSdata3;
+    N(depth2+1:depth, 1:xx, 1:yy) = space(depth2+1:depth, 1:xx, 1:yy)*Ndata3;
+    a(depth2+1:depth, 1:xx, 1:yy) = space(depth2+1:depth, 1:xx, 1:yy)*adata3;
+    M(depth2+1:depth, 1:xx, 1:yy) = space(depth2+1:depth, 1:xx, 1:yy)*Mdata3;
+elseif numhor == 4
+    depth1 = data(1,9);
+    SATdata1 = data(1,8)/100;
+    KSdata1 = data(1,5);
+    FCdata1 = data(1,6)/100;
+    WPdata1 = data(1,7)/100;
+    TTdata1 = (SATdata1 - FCdata1)/(KSdata1/24);  
+    Ndata1 = exp(-1.0846+(-0.0236*data(1,3))+(-0.0085*data(1,1))+(0.0001*data(1,1)^2))+1;
+    adata1 = exp(-4.3+(-0.0097*data(1,3))+(0.0138*data(1,1))+(-0.0992*data(1,4)));
+    Mdata1 = 1-1/Ndata1;
+    
+    depth2 = data(2,9);
+    SATdata2 = data(2,8)/100;
+    KSdata2 = data(2,5);
+    FCdata2 = data(2,6)/100;
+    WPdata2 = data(2,7)/100;
+    TTdata2 = (SATdata2 - FCdata2)/(KSdata2/24);  
+    Ndata2 = exp(-1.0846+(-0.0236*data(2,3))+(-0.0085*data(2,1))+(0.0001*data(2,1)^2))+1;
+    adata2 = exp(-4.3+(-0.0097*data(2,3))+(0.0138*data(2,1))+(-0.0992*data(2,4)));
+    Mdata2 = 1-1/Ndata2;
+    
+    depth3 = data(3,9);
+    SATdata3 = data(3,8)/100;
+    KSdata3 = data(3,5);
+    FCdata3 = data(3,6)/100;
+    WPdata3 = data(3,7)/100;
+    TTdata3 = (SATdata3 - FCdata3)/(KSdata3/24);  
+    Ndata3 = exp(-1.0846+(-0.0236*data(3,3))+(-0.0085*data(3,1))+(0.0001*data(3,1)^2))+1;
+    adata3 = exp(-4.3+(-0.0097*data(3,3))+(0.0138*data(3,1))+(-0.0992*data(3,4)));
+    Mdata3 = 1-1/Ndata3;
+    
+    SATdata4 = data(4,8)/100;
+    KSdata4 = data(4,5);
+    FCdata4 = data(4,6)/100;
+    WPdata4 = data(4,7)/100;
+    TTdata4 = (SATdata4 - FCdata4)/(KSdata4/24);  
+    Ndata4 = exp(-1.0846+(-0.0236*data(4,3))+(-0.0085*data(4,1))+(0.0001*data(4,1)^2))+1;
+    adata4 = exp(-4.3+(-0.0097*data(4,3))+(0.0138*data(4,1))+(-0.0992*data(4,4)));
+    Mdata4 = 1-1/Ndata3;
+    space = ones(depth,xx,yy);
+    spacetime = ones(depth,xx,yy,120,24);
+    
+    SAT(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*SATdata1;
+    FC(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*FCdata1;
+    SWly1(1:depth1, 1:xx, 1:yy,:,:) = FCdata1*spacetime(1:depth1, 1:xx, 1:yy,:,:);
+    WP(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*WPdata1;
+    TT(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*TTdata1;
+    KS(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*KSdata1;
+    N(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*Ndata1;
+    a(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*adata1;
+    M(1:depth1, 1:xx, 1:yy) = space(1:depth1, 1:xx, 1:yy)*Mdata1;
+    
+    SAT(depth1+1:depth2, 1:xx, 1:yy) = space(depth1+1:depth2, 1:xx, 1:yy)*SATdata2;
+    FC(depth1+1:depth2, 1:xx, 1:yy) = space(depth1+1:depth2, 1:xx, 1:yy)*FCdata2;
+    SWly1(depth1+1:depth2, 1:xx, 1:yy,:,:) = FCdata2*spacetime(depth1+1:depth2, 1:xx, 1:yy,:,:);
+    WP(depth1+1:depth2, 1:xx, 1:yy) = space(depth1+1:depth2, 1:xx, 1:yy)*WPdata2;
+    TT(depth1+1:depth2, 1:xx, 1:yy) = space(depth1+1:depth2, 1:xx, 1:yy)*TTdata2;
+    KS(depth1+1:depth2, 1:xx, 1:yy) = space(depth1+1:depth2, 1:xx, 1:yy)*KSdata2;
+    N(depth1+1:depth2, 1:xx, 1:yy) = space(depth1+1:depth2, 1:xx, 1:yy)*Ndata2;
+    a(depth1+1:depth2, 1:xx, 1:yy) = space(depth1+1:depth2, 1:xx, 1:yy)*adata2;
+    M(depth1+1:depth2, 1:xx, 1:yy) = space(depth1+1:depth2, 1:xx, 1:yy)*Mdata2;
+    
+    SAT(depth2+1:depth3, 1:xx, 1:yy) = space(depth2+1:depth3, 1:xx, 1:yy)*SATdata3;
+    FC(depth2+1:depth3, 1:xx, 1:yy) = space(depth2+1:depth3, 1:xx, 1:yy)*FCdata3;
+    SWly1(depth2+1:depth3, 1:xx, 1:yy,:,:) = FCdata3*spacetime(depth2+1:depth3, 1:xx, 1:yy,:,:);
+    WP(depth2+1:depth3, 1:xx, 1:yy) = space(depth2+1:depth3, 1:xx, 1:yy)*WPdata3;
+    TT(depth2+1:depth3, 1:xx, 1:yy) = space(depth2+1:depth3, 1:xx, 1:yy)*TTdata3;
+    KS(depth2+1:depth3, 1:xx, 1:yy) = space(depth2+1:depth3, 1:xx, 1:yy)*KSdata3;
+    N(depth2+1:depth3, 1:xx, 1:yy) = space(depth2+1:depth3, 1:xx, 1:yy)*Ndata3;
+    a(depth2+1:depth3, 1:xx, 1:yy) = space(depth2+1:depth3, 1:xx, 1:yy)*adata3;
+    M(depth2+1:depth3, 1:xx, 1:yy) = space(depth2+1:depth3, 1:xx, 1:yy)*Mdata3;
+    
+    SAT(depth3+1:depth, 1:xx, 1:yy) = space(depth3+1:depth, 1:xx, 1:yy)*SATdata4;
+    FC(depth3+1:depth, 1:xx, 1:yy) = space(depth3+1:depth, 1:xx, 1:yy)*FCdata4;
+    SWly1(depth3+1:depth, 1:xx, 1:yy,:,:) = FCdata4*spacetime(depth3+1:depth, 1:xx, 1:yy,:,:);
+    WP(depth3+1:depth, 1:xx, 1:yy) = space(depth3+1:depth, 1:xx, 1:yy)*WPdata4;
+    TT(depth3+1:depth, 1:xx, 1:yy) = space(depth3+1:depth, 1:xx, 1:yy)*TTdata4;
+    KS(depth3+1:depth, 1:xx, 1:yy) = space(depth3+1:depth, 1:xx, 1:yy)*KSdata4;
+    N(depth3+1:depth, 1:xx, 1:yy) = space(depth3+1:depth, 1:xx, 1:yy)*Ndata4;
+    a(depth3+1:depth, 1:xx, 1:yy) = space(depth3+1:depth, 1:xx, 1:yy)*adata4;
+    M(depth3+1:depth, 1:xx, 1:yy) = space(depth3+1:depth, 1:xx, 1:yy)*Mdata4;
+end
+
+system.KS = KS;
+system.WP = WP;
+system.FC = FC;
+system.SAT = SAT;
+system.TT = TT;
+system.N = N;
+system.A = a;
+system.M = M;
+system.SWly1 = SWly1;
